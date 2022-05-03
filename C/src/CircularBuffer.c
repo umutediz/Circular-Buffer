@@ -9,6 +9,10 @@
 
 //#warning "Buffer size must be a power of two"
 
+inline uint32_t getRealPos(tCircularBuffer* cb, uint32_t pos) {
+  return ((pos) & (cb->size - 1));
+}
+
 tBufferStatus readCircularBuffer(tCircularBuffer* cb, uint8_t* data) {
   if (bufferLength(cb) == 0) {
     return BufferEmpty;

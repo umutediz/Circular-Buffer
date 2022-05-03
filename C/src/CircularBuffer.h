@@ -11,8 +11,6 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-#define __GET_POS(CB, X) ((X) & (CB.size - 1))
-
 typedef struct circularBuffer {
   uint8_t* Buffer;
   uint32_t readPos;
@@ -34,5 +32,6 @@ tBufferStatus writeCircularBuffer(tCircularBuffer* cb, uint8_t data);
 uint32_t bufferLength(tCircularBuffer* cb);
 tCircularBuffer initBuffer(uint32_t size);
 void destroyBuffer(tCircularBuffer* cb);
+uint32_t getRealPos(tCircularBuffer* cb, uint32_t pos);
 
 #endif /* CIRCULARBUFFER_H_ */
