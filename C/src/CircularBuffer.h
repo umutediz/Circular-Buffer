@@ -33,5 +33,7 @@ uint32_t bufferLength(tCircularBuffer* cb);
 tCircularBuffer initBuffer(uint32_t size);
 void destroyBuffer(tCircularBuffer* cb);
 uint32_t getRealPos(tCircularBuffer* cb, uint32_t pos);
+tBufferStatus peekCircularBuffer(tCircularBuffer* cb, uint8_t* data,
+                                 uint32_t offset);
 
 #endif /* CIRCULARBUFFER_H_ */

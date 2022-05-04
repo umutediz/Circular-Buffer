@@ -165,3 +165,21 @@ void test_cb_chasing_read_overflow() {
                                    "Buffer still contains data");
   TEST_ASSERT(readCircularBuffer(cb, &data) == BufferEmpty);
 }
+
+void test_cb_peek() {
+  writeCircularBuffer(cb, 0x55);
+  writeCircularBuffer(cb, 0xAA);
+
+  uint8_t data;
+  TEST_ASSERT_TRUE(peekCircularBuffer(cb, &data, 0) == BufferTrue);
+  TEST_ASSERT(data == 0x55);
+
+  TEST_ASSERT_TRUE(peekCircularBuffer(cb, &data, 1) == BufferTrue);
+  TEST_ASSERT(data == 0xAA);
+
+  TEST_ASSERT(readCircularBuffer(cb, &data) == BufferTrue);
+  TEST_ASSERT(data == 0x55);
+
+  TEST_ASSERT(readCircularBuffer(cb, &data) == BufferTrue);
+  TEST_ASSERT(data == 0xAA);
+}

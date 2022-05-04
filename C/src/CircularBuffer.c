@@ -42,4 +42,14 @@ tCircularBuffer initBuffer(uint32_t size) {
   return cb;
 }
 
+tBufferStatus peekCircularBuffer(tCircularBuffer* cb, uint8_t* data,
+                                 uint32_t offset) {
+  if (data != NULL) {
+    *data = cb->Buffer[getRealPos(cb, cb->readPos + offset)];
+    return BufferTrue;
+  } else {
+    return BufferFalse;
+  }
+}
+
 void destroyBuffer(tCircularBuffer* cb) { free(cb->Buffer); }
