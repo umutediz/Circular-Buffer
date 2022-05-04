@@ -183,3 +183,39 @@ void test_cb_peek() {
   TEST_ASSERT(readCircularBuffer(cb, &data) == BufferTrue);
   TEST_ASSERT(data == 0xAA);
 }
+
+void test_cb_block_write() {
+  uint8_t test_string[] = "Block Test String";
+  uint8_t result[sizeof(test_string)];
+
+  TEST_ASSERT(writeCircularBufferBlock(cb, test_string, sizeof(test_string)) ==
+              BufferTrue);
+
+  for (int i = 0; i < sizeof(test_string); i++) {
+    TEST_ASSERT(readCircularBuffer(cb, result + i) == BufferTrue);
+  }
+
+  TEST_ASSERT_EQUAL_UINT8_ARRAY(test_string, result, sizeof(test_string));
+}
+
+void test_cb_block_read() {
+  // Force block read to rollover
+  for (int i = 0; i < cb->size - 4; i++) {
+    TEST_ASSERT(writeCircularBuffer(cb, 0xFF));
+  }
+
+  while (bufferLength(cb) > 0) {
+    uint8_t dummy;
+    TEST_ASSERT(readCircularBuffer(cb, &dummy));
+  }
+  uint8_t expected[] = "Block Test String";
+  uint8_t buff[sizeof(expected)];
+
+  for (int i = 0; i < sizeof(expected); i++) {
+    writeCircularBuffer(cb, expected[i]);
+  }
+
+  TEST_ASSERT(readCircularBufferBlock(cb, buff, sizeof(expected)) ==
+              BufferTrue);
+  TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, buff, sizeof(expected));
+}
