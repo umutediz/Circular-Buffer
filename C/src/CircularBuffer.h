@@ -11,28 +11,33 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-#define __GET_POS(CB, X) ((X) & (CB.size - 1))
-
 typedef struct circularBuffer {
-	uint8_t *Buffer;
-	uint32_t readPos;
-	uint32_t writePos;
-	uint32_t size;
-}tCircularBuffer;
+  uint8_t* Buffer;
+  uint32_t readPos;
+  uint32_t writePos;
+  uint32_t size;
+} tCircularBuffer;
 
 typedef enum {
- BufferFalse,
- BufferTrue,
- BufferEmpty,
- BufferFull,
- BufferAvailable
+  BufferFalse,
+  BufferTrue,
+  BufferEmpty,
+  BufferFull,
+  BufferAvailable
 
-}tBufferStatus;
+} tBufferStatus;
 
-tBufferStatus readCircularBuffer(tCircularBuffer* cb, uint8_t *data);
+tBufferStatus readCircularBuffer(tCircularBuffer* cb, uint8_t* data);
 tBufferStatus writeCircularBuffer(tCircularBuffer* cb, uint8_t data);
 uint32_t bufferLength(tCircularBuffer* cb);
 tCircularBuffer initBuffer(uint32_t size);
 void destroyBuffer(tCircularBuffer* cb);
+uint32_t getRealPos(tCircularBuffer* cb, uint32_t pos);
+tBufferStatus peekCircularBuffer(tCircularBuffer* cb, uint8_t* data,
+                                 uint32_t offset);
+tBufferStatus readCircularBufferBlock(tCircularBuffer* cb, uint8_t* data,
+                                      uint32_t len);
+tBufferStatus writeCircularBufferBlock(tCircularBuffer* cb, uint8_t* data,
+                                       uint32_t len);
 
 #endif /* CIRCULARBUFFER_H_ */
